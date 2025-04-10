@@ -11,6 +11,16 @@ HUMAN_EVAL = os.path.join(ROOT, "..", "data", "HumanEval.jsonl.gz")
 def read_problems(evalset_file: str = HUMAN_EVAL) -> Dict[str, Dict]:
     return {task["task_id"]: task for task in stream_jsonl(evalset_file)}
 
+def read_problems_debug(evalset_file: str = HUMAN_EVAL) -> Dict[str, Dict]:
+    d  = {}
+    i = 0
+    for task in stream_jsonl(evalset_file):
+        if i == 8:
+            return {task["task_id"]: task}
+        else:
+            i += 1
+
+
 
 def stream_jsonl(filename: str) -> Iterable[Dict]:
     """

@@ -3,7 +3,7 @@ from argparse import Namespace
 from fire import Fire
 from tqdm import tqdm
 
-from human_eval.data import write_jsonl, read_problems
+from human_eval.data import write_jsonl, read_problems, read_problems_debug
 from human_eval.evaluation import evaluate_functional_correctness
 from modeling import select_model, EvalModel
 
@@ -86,17 +86,57 @@ def test_fix_indents():
     print(fix_indents(text))
 
 
+# def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
+#     dataset = read_problems(data_path)
+#     n_sample = kwargs.get("n_sample", 1)
+#     best_temperature = {1: 0.1, 10: 0.6, 100: 0.8}
+#     samples = []
+#     progress_bar = tqdm(total=len(dataset) * n_sample, desc="Generating samples")
+#     for task_id in dataset:
+#         for i in range(n_sample):
+#             prompt = dataset[task_id]["prompt"]
+#             prompt = gen_prompt(prompt, model)
+#             temperature = best_temperature[n_sample]
+#             if temperature > 0:
+#                 completion = model.run(prompt, temperature=temperature, do_sample=True)
+#             else:
+#                 completion = model.run(prompt)
+
+#             completion = fix_indents(completion)
+#             sample = dict(task_id=task_id, completion=filter_code(completion, model))
+#             if i == 0:
+#                 print("Prompt: ", "-" * 100)
+#                 print(prompt)
+#                 print("Completion: ", "-" * 100)
+#                 print(filter_code(completion, model))
+#             samples.append(sample)
+#             progress_bar.update(1)
+#     progress_bar.close()
+
+#     model_name = model.model_path.replace("/", "_")
+#     pred_filename = f"humaneval_{model_name}_predictions.jsonl"
+#     write_jsonl(pred_filename, samples)
+#     print("Evaluating...")
+#     result = entry_point(problem_file=data_path, sample_file=pred_filename)
+#     return result
+
+# Hossam with pass
 def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
     dataset = read_problems(data_path)
+    # dataset = read_problems_debug(data_path)
     n_sample = kwargs.get("n_sample", 1)
     best_temperature = {1: 0.1, 10: 0.6, 100: 0.8}
+
+    best_temperature = 0.8
     samples = []
     progress_bar = tqdm(total=len(dataset) * n_sample, desc="Generating samples")
     for task_id in dataset:
         for i in range(n_sample):
             prompt = dataset[task_id]["prompt"]
             prompt = gen_prompt(prompt, model)
-            temperature = best_temperature[n_sample]
+            # Hossam set the default temperature to 0.8
+            # temperature = best_temperature[n_sample]
+            temperature = 0.8
             if temperature > 0:
                 completion = model.run(prompt, temperature=temperature, do_sample=True)
             else:
@@ -111,13 +151,17 @@ def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
                 print(filter_code(completion, model))
             samples.append(sample)
             progress_bar.update(1)
+
+
     progress_bar.close()
 
     model_name = model.model_path.replace("/", "_")
-    pred_filename = f"humaneval_{model_name}_predictions.jsonl"
+    # pred_filename = f"humaneval_{model_name}_predictions.jsonl"
+    pred_filename = f"humaneval_{model_name}_predictions_pass@{n_sample}.jsonl"
     write_jsonl(pred_filename, samples)
     print("Evaluating...")
-    result = entry_point(problem_file=data_path, sample_file=pred_filename)
+    # result = entry_point(problem_file=data_path, sample_file=pred_filename)
+    result = entry_point(problem_file=data_path, sample_file=pred_filename, k="1,2,4")
     return result
 
 
