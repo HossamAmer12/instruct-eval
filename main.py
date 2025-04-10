@@ -7,8 +7,23 @@ import mmlu
 from human_eval.main import main as humaneval
 from lm_eval import evaluator
 
+from transformers import (
+    PreTrainedModel,
+    PreTrainedTokenizer,
+    AutoModelForSeq2SeqLM,
+    AutoModelForCausalLM,
+    LlamaForCausalLM,
+    LlamaTokenizer,
+    AutoModel,
+    LlamaConfig,
+)
 
 def main(task_name: str, **kwargs):
+
+    # model_path = "/data00/maryam/models--TinyLlama--TinyLlama-1.1B-intermediate-step-480k-1T/snapshots/0e23ce8110cbb7e9afe5296bc9686e6dfdae47c2"
+    # model = LlamaForCausalLM.from_pretrained(model_path)
+    # print(model)
+    # exit(0)
     task_map = dict(
         mmlu=mmlu.main,
         bbh=bbh.main,

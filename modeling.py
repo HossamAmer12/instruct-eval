@@ -130,10 +130,11 @@ class OpenAIModel(EvalModel):
         return "Z"
 
 
+# Hossam it has be none
 class SeqToSeqModel(EvalModel):
     model_path: str
-    model: Optional[PreTrainedModel]
-    tokenizer: Optional[PreTrainedTokenizer]
+    model: Optional[PreTrainedModel] = None
+    tokenizer: Optional[PreTrainedTokenizer] = None
     lora_path: str = ""
     device: str = "cuda"
     load_8bit: bool = False
@@ -247,7 +248,10 @@ class LlamaModel(SeqToSeqModel):
             args = {}
             if self.load_8bit:
                 args.update(device_map="auto", load_in_8bit=True)
+            
             self.model = LlamaForCausalLM.from_pretrained(self.model_path, **args)
+            # config = LlamaConfig.from_pretrained(self.model_path)
+            # self.model = LlamaForCausalLM.from_pretrained(self.model_path, config=config)
             if self.lora_path:
                 self.model = PeftModel.from_pretrained(self.model, self.lora_path)
             self.model.eval()
@@ -502,6 +506,9 @@ def select_model(model_name: str, **kwargs) -> EvalModel:
     model_class = model_map.get(model_name)
     if model_class is None:
         raise ValueError(f"{model_name}. Choose from {list(model_map.keys())}")
+    
+    # print(kwargs)
+    # exit(0)
     return model_class(**kwargs)
 
 

@@ -7,6 +7,18 @@ from human_eval.data import write_jsonl, read_problems
 from human_eval.evaluation import evaluate_functional_correctness
 from modeling import select_model, EvalModel
 
+from transformers import (
+    PreTrainedModel,
+    PreTrainedTokenizer,
+    AutoModelForSeq2SeqLM,
+    AutoModelForCausalLM,
+    LlamaForCausalLM,
+    LlamaTokenizer,
+    AutoModel,
+    LlamaConfig,
+)
+
+
 
 def entry_point(
     problem_file: str,
@@ -111,6 +123,17 @@ def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
 
 def main(data_path: str = "human_eval/HumanEval.jsonl.gz", **kwargs):
     args = Namespace(**locals())
+
+
+    # Load the actual model and tokenizer
+    # model_path = "/data00/maryam/models--TinyLlama--TinyLlama-1.1B-intermediate-step-480k-1T/snapshots/0e23ce8110cbb7e9afe5296bc9686e6dfdae47c2"
+    # model = LlamaForCausalLM.from_pretrained(model_path)
+    # tokenizer = LlamaTokenizer.from_pretrained(model_path)
+
+    # # Inject them into kwargs so LlamaModel can be validated properly
+    # kwargs["model"] = model
+    # kwargs["tokenizer"] = tokenizer
+
     model = select_model(max_input_length=1360, max_output_length=512, **kwargs)
     print(locals())
 
