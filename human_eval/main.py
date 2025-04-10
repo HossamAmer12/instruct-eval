@@ -161,7 +161,7 @@ def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
     write_jsonl(pred_filename, samples)
     print("Evaluating...")
     # result = entry_point(problem_file=data_path, sample_file=pred_filename)
-    result = entry_point(problem_file=data_path, sample_file=pred_filename, k="1,2,4")
+    result = entry_point(problem_file=data_path, sample_file=pred_filename, k="1,2,4,8,16,32,64")
     return result
 
 
