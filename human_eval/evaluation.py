@@ -6,7 +6,7 @@ import itertools
 import numpy as np
 import tqdm
 
-from human_eval.data import HUMAN_EVAL, read_problems, stream_jsonl, write_jsonl, read_problems_debug
+from human_eval.data import HUMAN_EVAL, read_problems, stream_jsonl, write_jsonl, read_problems_debug, write_jsonl_ttc
 from human_eval.execution import check_correctness
 
 
@@ -100,8 +100,11 @@ def evaluate_functional_correctness(
             sample["passed"] = result[1]["passed"]
             yield sample
 
-    out_file = sample_file + "_results.jsonl"
+    # out_file = sample_file + "_results.jsonl"
+    out_file = "human_eval_results/" + sample_file + "_results.jsonl"
     print(f"Writing results to {out_file}...")
-    write_jsonl(out_file, tqdm.tqdm(combine_results(), total=n_samples))
+    # write_jsonl(out_file, tqdm.tqdm(combine_results(), total=n_samples))
+    write_jsonl_ttc(out_file, tqdm.tqdm(combine_results(), total=n_samples), 
+                    pass_at_k=pass_at_k)
 
     return pass_at_k
