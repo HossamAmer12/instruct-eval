@@ -15,7 +15,8 @@ MODEL_PATHS=(
 
 
 # 45 mins for pass@1.. 
-GPU_ID=0
+# GPU_ID=0
+GPU_ID=3
 model_path=${MODEL_PATHS[$GPU_ID]}
 
 CUDA_VISIBLE_DEVICES=$GPU_ID python main.py humaneval --model_name llama  --n_sample 64 --model_path $model_path
