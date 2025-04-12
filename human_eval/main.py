@@ -186,6 +186,13 @@ def main(data_path: str = "human_eval/HumanEval.jsonl.gz", **kwargs):
     return result["pass@1"]
 
 
+# def main(**kwargs):
+#     sample_file = "baseline_ieval/instruct-eval/humaneval__dataset_pythia-70m-deduped_step80000_models--EleutherAI--pythia-70m-deduped_snapshots_03866fcabb62cd47b2d281879cb3b56dc2ad9fb4__predictions_pass@1.jsonl"
+
+#     evaluate_functional_correctness(
+#     sample_file
+#     )
+
 """
 p humaneval.py main  --model_name llama --model_path decapoda-research/llama-7b-hf --n_sample 1
 {'pass@1': 0.105}
