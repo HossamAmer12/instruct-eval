@@ -72,7 +72,25 @@ def extract_info(filename):
         filename
     )
     if match:
-        return "TinyLlama", match.group("step"), match.group("tokens")
+        if "Tinyllama" in fname:
+            return "TinyLlama", match.group("step"), match.group("tokens")
+    # pythia case
+    else:
+        match = re.search(
+        r"_step(?P<step>\d+)_models--[^-]+--(?P<model>pythia-\d+[a-zA-Z]*)[^_]*_snapshots", 
+        filename
+        )
+        if match:
+            step = int(match.group("step"))
+            tokens_num = step * 2_097_152_000
+            # Convert to readable token string (e.g., "167.8T")
+            if tokens_num >= 1e12:
+                tokens_str = f"{tokens_num / 1e12:.1f}T"
+            elif tokens_num >= 1e9:
+                tokens_str = f"{tokens_num / 1e9:.1f}B"
+            else:
+                tokens_str = str(tokens_num)
+            return match.group("model"), str(step), tokens_str
 
     # return "unknown_model", "NA", "NA"
     return "Tinyllama", "NA", "NA"
