@@ -102,6 +102,7 @@ def evaluate_functional_correctness(
 
     # out_file = sample_file + "_results.jsonl"
     out_file = "human_eval_baseline_results/" + sample_file + "_results.jsonl"
+    # out_file = "finemath_human_eval_baseline_results/" + sample_file + "_results.jsonl"
     print(f"Writing results to {out_file}...")
     # write_jsonl(out_file, tqdm.tqdm(combine_results(), total=n_samples))
     write_jsonl_ttc(out_file, tqdm.tqdm(combine_results(), total=n_samples), 
