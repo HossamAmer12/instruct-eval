@@ -43,7 +43,7 @@ GPU_ID=7
 
 
 # for MODEL_ID in "${!MODEL_PATHS[@]}"; do
-for MODEL_ID in 0 1 2 3; do
+for MODEL_ID in 0 1 2 3 4 5 6 7; do
     model_path=${MODEL_PATHS[$MODEL_ID]}
 
     echo "Running on GPU $MODEL_ID with model path: $model_path"
@@ -53,3 +53,5 @@ for MODEL_ID in 0 1 2 3; do
         --n_sample 64 \
         --model_path "$model_path"
 done
+
+

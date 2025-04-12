@@ -20,3 +20,10 @@ GPU_ID=5
 model_path=${MODEL_PATHS[$GPU_ID]}
 
 CUDA_VISIBLE_DEVICES=$GPU_ID python main.py humaneval --model_name llama  --n_sample 64 --model_path $model_path
+
+
+# CUDA_VISIBLE_DEVICES=7 python main.py humaneval --model_name llama  --n_sample 64 --model_path PY007/TinyLlama-1.1B-intermediate-step-480K-1T^C
+# (ieval) hossam@lux-2-node-11:~/TTC_workspace/instruct-eval$ 
+# {'pass@1': 0.03239329268292683, 'pass@2': 0.04780657181571816, 'pass@4': 0.06547018289458412, 'pass@8': 0.08565974816698098, 'pass@16': 0.10787609160566579, 'pass@32': 0.1289450432366897, 'pass@64': 0.1524390243902439}
+# {'humaneval': 3.24}
+# humaneval: 3.24
