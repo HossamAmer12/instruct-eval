@@ -11,3 +11,4 @@ model_path="/dataset/pythia-410m-deduped/step80000/models--EleutherAI--pythia-41
 
 CUDA_VISIBLE_DEVICES=3 python main.py humaneval --model_name causal  --n_sample 64 --model_path $model_path
 
+# sampled_ckpt_list = [1000, 20000, 40000, 80000, 100000, 120000, 143000]
