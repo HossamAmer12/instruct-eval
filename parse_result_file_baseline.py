@@ -72,7 +72,7 @@ def extract_info(filename):
         filename
     )
     if match:
-        if "Tinyllama" in fname:
+        if "Tinyllama" in filename:
             return "TinyLlama", match.group("step"), match.group("tokens")
     # pythia case
     else:
