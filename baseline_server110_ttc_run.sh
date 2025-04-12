@@ -18,13 +18,23 @@
 #     "/work/hossamamer/tinyllama/step-660k-token-1384B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/91804715ca0e86a0bf67465a52383fe955462e54"
 # )
 
-# priotized
-MODEL_PATHS=(
-        "/data00/maryam/models--TinyLlama--TinyLlama-1.1B-intermediate-step-480k-1T/snapshots/0e23ce8110cbb7e9afe5296bc9686e6dfdae47c2"
-        "/data00/dataset/tinyllama/step-540k-token-1132B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/55ae337d54316b6817247b46c39b3bd99308786f"
-        "/data00/dataset/tinyllama/step-600k-token-1258B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/f056976086771d075133feda7bad88047c1b7802"
-)
+# priotized tinyllama
+# MODEL_PATHS=(
+#         "/data00/maryam/models--TinyLlama--TinyLlama-1.1B-intermediate-step-480k-1T/snapshots/0e23ce8110cbb7e9afe5296bc9686e6dfdae47c2"
+#         "/data00/dataset/tinyllama/step-540k-token-1132B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/55ae337d54316b6817247b46c39b3bd99308786f"
+#         "/data00/dataset/tinyllama/step-600k-token-1258B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/f056976086771d075133feda7bad88047c1b7802"
+# )
 
+# Finemath
+MODEL_PATHS=(
+    # 14,15,16,17
+    "/data00/dataset/finemath/finemath-llama3b/40B/models--HuggingFaceTB--finemath-ablation-finemath-4plus/snapshots/a5327c94c99a795d0a48089253b8f9356ceed281/"
+    "/data00/dataset/finemath/finemath-llama3b/10B/models--HuggingFaceTB--finemath-ablation-finemath-4plus/snapshots/f3be85d2df204cf454cfd06657b7b0c788ceedb1/"
+
+    "/data00/dataset/finemath/finemath-llama3b/20B/models--HuggingFaceTB--finemath-ablation-finemath-4plus/snapshots/4ccc2949da259213552d6257a89c9448a666437e/"
+    "/data00/dataset/finemath/finemath-llama3b/30B/models--HuggingFaceTB--finemath-ablation-finemath-4plus/snapshots/b60bc20540d30bc69efb0253a9ea1b4a77ac2054/"
+    "/data00/dataset/finemath/finemath-llama3b/50B/models--HuggingFaceTB--finemath-ablation-finemath-4plus/snapshots/49c2b41df57e3e65368f7e2ccdcd50ec3fe88ba8/"
+)
 
 # 45 mins for pass@1.. 
 # GPU_ID=0
@@ -35,13 +45,18 @@ GPU_ID=7
 
 
 # for MODEL_ID in "${!MODEL_PATHS[@]}"; do
-for MODEL_ID in 1; do
+for MODEL_ID in 0 1 2 3 4; do
     model_path=${MODEL_PATHS[$MODEL_ID]}
 
     echo "Running on GPU $MODEL_ID with model path: $model_path"
 
-    CUDA_VISIBLE_DEVICES=1 python main.py humaneval \
-        --model_name llama \
+#     CUDA_VISIBLE_DEVICES=4 python main.py humaneval \
+#         --model_name llama \
+#         --n_sample 1 \
+#         --model_path "$model_path"
+
+  CUDA_VISIBLE_DEVICES=5 python main.py humaneval \
+        --model_name causal \
         --n_sample 1 \
         --model_path "$model_path"
 done
