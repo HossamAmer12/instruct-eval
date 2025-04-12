@@ -29,6 +29,7 @@ MODEL_PATHS=(
         "/work/hossamamer/tinyllama/step-360k-token-755B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/223a4964750d14dd0265ce9d5a56b4f1c540b15b"
         "/work/hossamamer/tinyllama/step-420k-token-881B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/87ac1fb103c323bafb34dc42b97a30aa4de225e1"
         "/work/hossamamer/tinyllama/step-480k-token-1007B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/68c667a2869968a1d527edd85b578e54696434b2"
+        
         "/work/hossamamer/tinyllama/step-540k-token-1132B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/55ae337d54316b6817247b46c39b3bd99308786f"
         "/work/hossamamer/tinyllama/step-600k-token-1258B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/f056976086771d075133feda7bad88047c1b7802"
 )
