@@ -16,7 +16,7 @@ def extract_fname_info(fname):
         print("Pattern not found.")
     return step, training_size
 
-def extract_info(filename):
+def extract_info_helper(filename):
     # Try pattern with "token-" first
     match = re.search(
         r"models--[^-]+--(?P<model>.+?)-step-(?P<step>[\w.]+)-token-(?P<tokens>[\w.]+)_snapshots", 
@@ -35,7 +35,64 @@ def extract_info(filename):
         tokens = match.group("tokens")
         return model_name, step, tokens
     else:
-        return None, None, None
+        return "Tinyllama", "NA", "NA"
+
+def extract_info(filename):
+    # Case A: step-XXX-token-XXX
+    match = re.search(
+        r"step-(?P<step>[\w.]+)-token-(?P<tokens>[\w.]+)_models--[^-]+--(?P<model>.+?)_snapshots",
+        filename
+    )
+    if match:
+        return match.group("model"), match.group("step"), match.group("tokens")
+
+    # Case B: step-XXX-XXX (tokens as second value)
+    match = re.search(
+        r"step-(?P<step>[\w.]+)-(?P<tokens>[\w.]+)_models--[^-]+--(?P<model>.+?)_snapshots",
+        filename
+    )
+    if match:
+        return match.group("model"), match.group("step"), match.group("tokens")
+
+    # Case C: token prefix like _30B_models--...
+    match = re.search(
+        r"_(?P<tokens>\d+[kMGTB])_models--[^-]+--(?P<model>.+?)_snapshots",
+        filename
+    )
+    if match:
+        tokens = match.group("tokens")
+        step = tokens.rstrip("kMGTB")  # Use numeric part as step placeholder
+        return match.group("model"), step, tokens
+
+    print(filename, "ERROR")
+    match = re.search(
+        r"models--TinyLlama--TinyLlama-1\.1B-intermediate-step-(?P<step>[\w.]+)-(?P<tokens>[\w.]+)_snapshots", 
+        filename
+    )
+    if match:
+        if "Tinyllama" in filename:
+            return "TinyLlama", match.group("step"), match.group("tokens")
+    # pythia case
+    else:
+        match = re.search(
+        r"_step(?P<step>\d+)_models--[^-]+--(?P<model>pythia-\d+[a-zA-Z]*)[^_]*_snapshots", 
+        filename
+        )
+        if match:
+            step = int(match.group("step"))
+            tokens_num = step * 2_097_152_000
+            # Convert to readable token string (e.g., "167.8T")
+            if tokens_num >= 1e12:
+                tokens_str = f"{tokens_num / 1e12:.1f}T"
+            elif tokens_num >= 1e9:
+                tokens_str = f"{tokens_num / 1e9:.1f}B"
+            else:
+                tokens_str = str(tokens_num)
+            return match.group("model"), str(step), tokens_str
+
+    return extract_info_helper(filename=filename)
+    # return "unknown_model", "NA", "NA"
+    # return "Tinyllama", "NA", "NA"
 
 # def parse_file(fname):
 #     with open(fname) as f:
