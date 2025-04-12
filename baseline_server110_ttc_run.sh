@@ -20,6 +20,7 @@
 
 # priotized
 MODEL_PATHS=(
+        "/data00/maryam/models--TinyLlama--TinyLlama-1.1B-intermediate-step-480k-1T/snapshots/0e23ce8110cbb7e9afe5296bc9686e6dfdae47c2"
         "/data00/dataset/tinyllama/step-540k-token-1132B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/55ae337d54316b6817247b46c39b3bd99308786f"
         "/data00/dataset/tinyllama/step-600k-token-1258B/models--TinyLlama--tinyLlama-intermediate-checkpoints/snapshots/f056976086771d075133feda7bad88047c1b7802"
 )
@@ -39,7 +40,7 @@ for MODEL_ID in 1; do
 
     echo "Running on GPU $MODEL_ID with model path: $model_path"
 
-    CUDA_VISIBLE_DEVICES=7 python main.py humaneval \
+    CUDA_VISIBLE_DEVICES=1 python main.py humaneval \
         --model_name llama \
         --n_sample 1 \
         --model_path "$model_path"
