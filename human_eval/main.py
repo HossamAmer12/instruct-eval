@@ -136,7 +136,7 @@ def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
             prompt = gen_prompt(prompt, model)
             # Hossam set the default temperature to 0.8
             # temperature = best_temperature[n_sample]
-            temperature = 0.8
+            temperature = 0.1
             if temperature > 0:
                 completion = model.run(prompt, temperature=temperature, do_sample=True)
             else:
