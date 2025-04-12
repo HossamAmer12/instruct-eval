@@ -127,7 +127,7 @@ def evaluate(model: EvalModel, data_path: str, **kwargs) -> dict:
     n_sample = kwargs.get("n_sample", 1)
     best_temperature = {1: 0.1, 10: 0.6, 100: 0.8}
 
-    best_temperature = 0.8
+    best_temperature = 0.1
     samples = []
     progress_bar = tqdm(total=len(dataset) * n_sample, desc="Generating samples")
     for task_id in dataset:
