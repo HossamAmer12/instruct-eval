@@ -19,6 +19,8 @@ def extract_token_number(revision):
 
 api = HfApi()
 repo_id = "EleutherAI/pythia-1b-deduped"
+repo_id = "EleutherAI/pythia-12b-deduped"
+repo_id = "EleutherAI/pythia-6.9b-deduped"
 
 # List all revisions (branches and tags)
 refs = api.list_repo_refs(repo_id=repo_id)
@@ -51,6 +53,10 @@ checkpoints_5day = [
     "main"
 ]
 
+checkpoints_5day = [
+    "step80000", "step143000"
+    ]
+
 # Long run
 # We take every 2nd or 3rd step in order, to reach ~60 samples:
 # Indices: 0, 2, 4, ..., 118 (first 60 indices at interval ~2–3)
@@ -67,7 +73,8 @@ print(len(checkpoints_5day))
 for model_id in tqdm(checkpoints_5day):
     
     # path = f"/work/hossamamer/tinyllama/{model_id}"
-    path = f"/data00/dataset/pythia/{repo_id}/{model_id}"
+    # path = f"/data00/dataset/pythia/{repo_id}/{model_id}"
+    path = f"/work/hossamamer/pythia/{model_id}"
     tokenizer = AutoTokenizer.from_pretrained(repo_id,
            revision=model_id,
            cache_dir=path,)

@@ -57,9 +57,14 @@ device = "cpu"
 print("Loading")
 print(len(checkpoints_5day))
 results = []
-for model_id in tqdm(checkpoints_5day):
-    
+# for model_id in tqdm(checkpoints_5day):
+for model_id in tqdm(sorted_revisions):
+
+    if model_id in checkpoints_5day:
+        continue
+
     path = f"/work/hossamamer/tinyllama/{model_id}"
+    path = f"/work/hossamamer/tinyllama/more_checkpoints/{model_id}"
   
         
     base_path = os.path.join(path, "models--TinyLlama--tinyLlama-intermediate-checkpoints", "snapshots")

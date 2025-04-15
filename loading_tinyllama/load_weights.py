@@ -54,11 +54,19 @@ print(f"Loading Model {lt.tm_hour}:{lt.tm_min}:{lt.tm_sec}")
 
 device = "cpu"
 
+print(sorted_revisions)
+exit(0)
+
 print("Loading")
 print(len(checkpoints_5day))
-for model_id in tqdm(checkpoints_5day):
+# for model_id in tqdm(checkpoints_5day):
+for model_id in tqdm(sorted_revisions):
     
-    path = f"/work/hossamamer/tinyllama/{model_id}"
+    if model_id in checkpoints_5day:
+        continue
+    print(model_id)
+    # path = f"/work/hossamamer/tinyllama/{model_id}"
+    path = f"/work/hossamamer/tinyllama/more_checkpoints/{model_id}"
     tokenizer = AutoTokenizer.from_pretrained("TinyLlama/tinyLlama-intermediate-checkpoints",
            revision=model_id,
            cache_dir=path,)
