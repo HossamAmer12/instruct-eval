@@ -18,9 +18,15 @@ def extract_token_number(revision):
 
 
 api = HfApi()
+<<<<<<< Updated upstream
 repo_id = "EleutherAI/pythia-1b-deduped"
 repo_id = "EleutherAI/pythia-12b-deduped"
 repo_id = "EleutherAI/pythia-6.9b-deduped"
+=======
+# repo_id = "EleutherAI/pythia-1b-deduped"
+# repo_id = "EleutherAI/pythia-12b-deduped"
+repo_id = "EleutherAI/pythia-2.8b-deduped"
+>>>>>>> Stashed changes
 
 # List all revisions (branches and tags)
 refs = api.list_repo_refs(repo_id=repo_id)
@@ -48,10 +54,13 @@ sorted_revisions = sorted(revisions, key=extract_token_number)
 #     "step-660k-token-1384B"
 # ]
 
+# checkpoints_5day = [
+#     "step1000" , "step20000", "step40000", "step80000", "step100000", "step120000", "step143000",
+#     "main"
+# ]
 checkpoints_5day = [
-    "step1000" , "step20000", "step40000", "step80000", "step100000", "step120000", "step143000",
-    "main"
-]
+    "step80000", "step143000"
+    ]
 
 checkpoints_5day = [
     "step80000", "step143000"

@@ -21,19 +21,22 @@ MODEL_PATHS=(
      "/dataset/pythia_models/pythia-410m-deduped/step143000/models--EleutherAI--pythia-410m-deduped/snapshots/c0b6bef7dd1ec11d3baa07ee955de98a414dd464/"
      "/dataset/pythia_models/pythia-410m-deduped/step80000/models--EleutherAI--pythia-410m-deduped/snapshots/b77396893ccac5ec277aea65a323f0205c865ad4/"
 
+     "/data00/dataset/pythia/EleutherAI/pythia-2.8b-deduped/step80000/models--EleutherAI--pythia-2.8b-deduped/snapshots/3ee79a333612f56d6856caafad2b2c161e22c9df"
+    "/data00/dataset/pythia/EleutherAI/pythia-2.8b-deduped/step143000/models--EleutherAI--pythia-2.8b-deduped/snapshots/346f515745789fe4b4acbc74b105707cc9d5a36d"
+
 )
 
 
 # 45 mins for pass@1.. 
 # GPU_ID=0
-GPU_ID=3
+GPU_ID=5
 model_path=${MODEL_PATHS[$GPU_ID]}
 
 # Llama:
 # CUDA_VISIBLE_DEVICES=$GPU_ID python main.py humaneval --model_name llama  --n_sample 64 --model_path $model_path
 
 # Pythia:
-CUDA_VISIBLE_DEVICES=7 python main.py humaneval --model_name causal  --n_sample 64 --model_path $model_path
+CUDA_VISIBLE_DEVICES=1 python main.py humaneval --model_name causal  --n_sample 64 --model_path $model_path
 
 
 # CUDA_VISIBLE_DEVICES=7 python main.py humaneval --model_name llama  --n_sample 64 --model_path PY007/TinyLlama-1.1B-intermediate-step-480K-1T^C

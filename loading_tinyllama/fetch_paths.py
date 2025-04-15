@@ -46,6 +46,10 @@ checkpoints_5day = [
     "step-660k-token-1384B"
 ]
 
+checkpoints_5day = [
+    "step-540k-token-1132B",
+    "step-600k-token-1258B",
+]
 
 ts = time.time()
 lt = time.localtime()
@@ -57,6 +61,7 @@ device = "cpu"
 print("Loading")
 print(len(checkpoints_5day))
 results = []
+<<<<<<< Updated upstream
 # for model_id in tqdm(checkpoints_5day):
 for model_id in tqdm(sorted_revisions):
 
@@ -65,6 +70,12 @@ for model_id in tqdm(sorted_revisions):
 
     path = f"/work/hossamamer/tinyllama/{model_id}"
     path = f"/work/hossamamer/tinyllama/more_checkpoints/{model_id}"
+=======
+for model_id in tqdm(checkpoints_5day):
+    
+    # path = f"/work/hossamamer/tinyllama/{model_id}"
+    path = f"/data00/dataset/tinyllama/{model_id}"
+>>>>>>> Stashed changes
   
         
     base_path = os.path.join(path, "models--TinyLlama--tinyLlama-intermediate-checkpoints", "snapshots")

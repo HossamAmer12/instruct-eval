@@ -46,6 +46,14 @@ checkpoints_5day = [
     "step-660k-token-1384B"
 ]
 
+# checkpoints_5day = [
+#     "step-540k-token-1132B",
+#     "step-600k-token-1258B",
+# ]
+
+# Long run
+# We take every 2nd or 3rd step in order, to reach ~60 samples:
+# Indices: 0, 2, 4, ..., 118 (first 60 indices at interval ~2–3)
 
 ts = time.time()
 lt = time.localtime()
@@ -67,6 +75,7 @@ for model_id in tqdm(sorted_revisions):
     print(model_id)
     # path = f"/work/hossamamer/tinyllama/{model_id}"
     path = f"/work/hossamamer/tinyllama/more_checkpoints/{model_id}"
+    path = f"/data00/dataset/tinyllama/more_checkpoints/{model_id}"
     tokenizer = AutoTokenizer.from_pretrained("TinyLlama/tinyLlama-intermediate-checkpoints",
            revision=model_id,
            cache_dir=path,)
