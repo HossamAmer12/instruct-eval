@@ -194,13 +194,21 @@ def parse_file(fname):
         return result
 
 def tokens_to_number(token_str):
-    match = re.match(r"([\d.]+)([kMGT])", token_str)
+    match = re.match(r"([\d.]+)([kMGTBb])", token_str)
     if not match:
         return 0
     num = float(match.group(1))
     unit = match.group(2)
-    multiplier = {"k": 1e3, "M": 1e6, "G": 1e9, "T": 1e12}
+    multiplier = {
+        "k": 1e3,
+        "M": 1e6,
+        "G": 1e9,
+        "B": 1e9,  # Add this
+        "b": 1e9,  # Add this
+        "T": 1e12
+    }
     return num * multiplier[unit]
+
 
 # Directory containing files
 directory = "human_eval_results"
@@ -223,6 +231,8 @@ for filename in os.listdir(directory):
 
         token_value = tokens_to_number(training_tokens)
         results.append((token_value, model_name, step, training_tokens, pass_results))
+        # print(f"token_value={token_value} model_name={model_name} step={step} train_tokens={training_tokens} pass_results={pass_results}")
+        # print((token_value, model_name, step, training_tokens, pass_results))
         # print(f"{model_name}\t{step}\t{training_tokens}\t{pass_results}")
         # print(f"{model_name}\t{step}\t{training_tokens}\t" + "\t".join(str(p) for p in pass_results))
 
