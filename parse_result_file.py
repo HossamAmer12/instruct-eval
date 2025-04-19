@@ -16,26 +16,67 @@ def extract_fname_info(fname):
         print("Pattern not found.")
     return step, training_size
 
+# That was the original version
+# def extract_info_helper(filename):
+#     # Try pattern with "token-" first
+#     match = re.search(
+#         r"models--[^-]+--(?P<model>.+?)-step-(?P<step>[\w.]+)-token-(?P<tokens>[\w.]+)_snapshots", 
+#         filename
+#     )
+#     if not match:
+#         # Try hyphen-separated version
+#         match = re.search(
+#             r"models--[^-]+--(?P<model>.+?)-step-(?P<step>[\w.]+)-(?P<tokens>[\w.]+)_snapshots", 
+#             filename
+#         )
+    
+#     if match:
+#         model_name = match.group("model")
+#         step = match.group("step")
+#         tokens = match.group("tokens")
+#         return model_name, step, tokens
+#     else:
+
+#         return "Tinyllama", "NA", "NA"
+
 def extract_info_helper(filename):
-    # Try pattern with "token-" first
+    # 🔹 Special case for "more_checkpoints"
+    if "more_checkpoints" in filename:
+        match = re.search(
+            r"__step-(?P<step>[\w.]+)-token-(?P<tokens>[\w.]+)_models--[^-]+--(?P<model>[^-_]+)", 
+            filename
+        )
+        if match:
+            model_name = match.group("model")
+            step = match.group("step")
+            tokens = match.group("tokens")
+
+            print("More checkpoints: ", model_name, step, tokens)
+            return model_name, step, tokens
+
+    # 🔸 Case A: step-token inside "models--...--model-step-...-token-..._snapshots"
     match = re.search(
         r"models--[^-]+--(?P<model>.+?)-step-(?P<step>[\w.]+)-token-(?P<tokens>[\w.]+)_snapshots", 
         filename
     )
+    
     if not match:
-        # Try hyphen-separated version
+        # 🔸 Case B: step-token with hyphenated format
         match = re.search(
             r"models--[^-]+--(?P<model>.+?)-step-(?P<step>[\w.]+)-(?P<tokens>[\w.]+)_snapshots", 
             filename
         )
-    
+        
     if match:
         model_name = match.group("model")
         step = match.group("step")
         tokens = match.group("tokens")
         return model_name, step, tokens
-    else:
-        return "Tinyllama", "NA", "NA"
+
+    # 🔸 Default fallback
+    return "Tinyllama", "NA", "NA"
+
+
 
 def extract_info(filename):
     # Case A: step-XXX-token-XXX
@@ -64,7 +105,7 @@ def extract_info(filename):
         step = tokens.rstrip("kMGTB")  # Use numeric part as step placeholder
         return match.group("model"), step, tokens
 
-    print(filename, "ERROR")
+    # print(filename, "ERROR")
     match = re.search(
         r"models--TinyLlama--TinyLlama-1\.1B-intermediate-step-(?P<step>[\w.]+)-(?P<tokens>[\w.]+)_snapshots", 
         filename
@@ -145,8 +186,12 @@ def parse_file(fname):
             result.append(y*100.0)
         return result
     except Exception as e:
-        print(f"Error reading file {fname}: {e}")
-        return ["NA"] * 4
+        # print("Exception e " , e)
+        # print("Result before loop ", result)
+        result.append(-1)
+        result.append(-1)
+        # return ["NA"] * 4
+        return result
 
 def tokens_to_number(token_str):
     match = re.match(r"([\d.]+)([kMGT])", token_str)
@@ -170,6 +215,10 @@ for filename in os.listdir(directory):
         model_name, step, training_tokens = extract_info(filename)
         pass_results = parse_file(full_path)
         
+        # Handle the case where different tinyllama
+        if "tinyllama" in model_name.lower():
+            model_name = "TinyLlama-1.1B"
+
         # print(f"Model: {model_name}, Step: {step}, Training Tokens: {training_tokens}, Pass@1/2/4: {pass_results}")
 
         token_value = tokens_to_number(training_tokens)
